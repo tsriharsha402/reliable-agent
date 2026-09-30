@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reliable-agent"
+version = "0.1.0"
+description = "A tool-using Claude agent with layered guardrails, human approval, budgets, tracing and a scenario-based evaluation."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Sriharsha T" }]
+requires-python = ">=3.11"
+dependencies = ["anthropic>=1.9"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.16,<0.17"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
