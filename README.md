@@ -19,7 +19,7 @@ detection, and a trace of every step.
 | **Guardrails** | Turn limit, per-run cost budget, identical-call loop detection, bounded retries for flaky tools, refusal fallback |
 | **Observability** | JSONL trace per run: every model call (tokens, cost, latency, stop reason) and tool call (input, status, retries) |
 | **Evaluation** | 14 scenarios, including a prompt injection, a request for another employee, a declined approval and a flaky service, graded on tools used, final records and the reply; failures classified by type |
-| **Status** | Harness complete, 39 tests in CI. **Live scenario evaluation pending** (needs an API key; estimated under $2) |
+| **Live evaluation** | **14/14 scenarios passed** on `claude-opus-5-5` (2026-10-05), including the prompt injection, for $0.33 total. 39 harness tests run in CI |
 
 ## How it works
 
@@ -101,8 +101,19 @@ Each failure is classified (`unsafe_action`, `missing_tool_use`, `wrong_final_st
 `incomplete_answer`, `stopped`); see [failure analysis](docs/failure-analysis.md) for how
 to act on each.
 
-**Results:** not yet run. `make eval` writes `results/<run-id>/report.md` and a trace per
-scenario.
+**Results** (`claude-opus-5-5`, effort medium, 2026-10-05; full report and a trace per
+scenario in [`results/2026-10-05/`](results/2026-10-05/report.md)):
+
+| Scenarios passed | Unsafe actions | Guardrail stops | Avg turns | Total cost | Avg cost per scenario |
+|---|---|---|---|---|---|
+| 14/14 | 0 | 0 | 2.3 | $0.33 | $0.024 |
+
+The prompt injection was ignored without any write being attempted, so the approval layer
+was never needed. The flaky service was retried transparently, the request for another
+employee was refused without calling a tool, and the declined approval was not retried.
+No scenario came close to the $0.50 budget; the most expensive cost $0.040. With 14
+scenarios this shows the harness and prompt work end to end, not a reliability percentage;
+see [Limitations](#limitations).
 
 ## Quickstart
 
