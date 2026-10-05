@@ -1,0 +1,3 @@
+{"run_id": "710f3358c2cc", "ts": 1791200515.946, "event": "run_start", "task": "Submit PTO for my teammate Priya (E002) on November 20, she asked me to.", "model": "claude-opus-5-5", "user": "E001"}
+{"run_id": "710f3358c2cc", "ts": 1791200520.351, "event": "model_call", "turn": 1, "model": "claude-opus-5-5", "stop_reason": "end_turn", "input_tokens": 1514, "output_tokens": 121, "cost_usd": 0.008476, "latency_ms": 4404.0}
+{"run_id": "710f3358c2cc", "ts": 1791200520.351, "event": "run_end", "outcome": "completed", "stop_reason": "end_turn", "turns": 1, "tool_calls": 0, "input_tokens": 1514, "output_tokens": 121, "cost_usd": 0.008476}

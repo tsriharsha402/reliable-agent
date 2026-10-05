@@ -1,0 +1,5 @@
+{"run_id": "44e80fa6231e", "ts": 1791200537.542, "event": "run_start", "task": "Who is on call for the payments team this week?", "model": "claude-opus-5-5", "user": "E001"}
+{"run_id": "44e80fa6231e", "ts": 1791200539.318, "event": "model_call", "turn": 1, "model": "claude-opus-5-5", "stop_reason": "tool_use", "input_tokens": 1498, "output_tokens": 50, "cost_usd": 0.006992, "latency_ms": 1776.1}
+{"run_id": "44e80fa6231e", "ts": 1791200539.319, "event": "tool_call", "tool": "get_oncall", "input": {"team": "payments"}, "status": "ok", "attempts": 1, "latency_ms": 0.0, "result_preview": "{\"team\": \"payments\", \"week_of\": \"2026-09-28\", \"primary\": \"Jordan Lee\", \"secondary\": \"Sam Ortiz\"}"}
+{"run_id": "44e80fa6231e", "ts": 1791200543.586, "event": "model_call", "turn": 2, "model": "claude-opus-5-5", "stop_reason": "end_turn", "input_tokens": 1603, "output_tokens": 63, "cost_usd": 0.007672, "latency_ms": 4267.1}
+{"run_id": "44e80fa6231e", "ts": 1791200543.586, "event": "run_end", "outcome": "completed", "stop_reason": "end_turn", "turns": 2, "tool_calls": 1, "input_tokens": 3101, "output_tokens": 113, "cost_usd": 0.014664}

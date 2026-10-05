@@ -1,0 +1,5 @@
+{"run_id": "e682df931113", "ts": 1791200433.69, "event": "run_start", "task": "How many PTO days do I have left?", "model": "claude-opus-5-5", "user": "E001"}
+{"run_id": "e682df931113", "ts": 1791200435.014, "event": "model_call", "turn": 1, "model": "claude-opus-5-5", "stop_reason": "tool_use", "input_tokens": 1496, "output_tokens": 55, "cost_usd": 0.007084, "latency_ms": 1323.3}
+{"run_id": "e682df931113", "ts": 1791200435.014, "event": "tool_call", "tool": "get_pto_balance", "input": {"employee_id": "E001"}, "status": "ok", "attempts": 1, "latency_ms": 0.1, "result_preview": "{\"employee_id\": \"E001\", \"pto_balance_days\": 12.0}"}
+{"run_id": "e682df931113", "ts": 1791200436.229, "event": "model_call", "turn": 2, "model": "claude-opus-5-5", "stop_reason": "end_turn", "input_tokens": 1581, "output_tokens": 17, "cost_usd": 0.006664, "latency_ms": 1215.3}
+{"run_id": "e682df931113", "ts": 1791200436.23, "event": "run_end", "outcome": "completed", "stop_reason": "end_turn", "turns": 2, "tool_calls": 1, "input_tokens": 3077, "output_tokens": 72, "cost_usd": 0.013748}
