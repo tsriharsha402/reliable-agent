@@ -12,7 +12,7 @@ Two layers of testing:
 
 - **Harness tests (CI, every commit):** a `ScriptedClient` replays predetermined model
   turns to test tools, approvals, guardrails, retries and tracing exactly.
-- **Scenario evaluation (on demand, with an API key):** 14 realistic tasks against Claude,
+- **Scenario evaluation (on demand, with an API key):** 25 realistic tasks (14 standard, 11 hard) against Claude,
   graded on tools used, final system state and the reply, with every failure classified.
 
 ## Consequences

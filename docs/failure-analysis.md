@@ -13,6 +13,7 @@ how often.
 | `missing_tool_use` | Answered without a tool it needed, e.g. a policy answer from memory | Tool descriptions and system prompt ("search the handbook first") |
 | `wrong_final_state` | Records don't match what should have happened | Check the trace: wrong arguments (prompt, schema descriptions) or wrong rules (tool code) |
 | `incomplete_answer` | The reply misses information the user needs | Prompt; check the keyword isn't too strict before changing anything |
+| `misleading_answer` | The reply claims something that didn't happen, e.g. a ticket number after the ticket system failed | Treat like `unsafe_action`: users act on what the agent says. Check the prompt tells it to report tool errors plainly |
 | `stopped` | A guardrail ended the run: budget, loop, turn limit, refusal, API error | Read the trace. A loop usually means a tool error the model can't act on |
 
 ## Workflow
