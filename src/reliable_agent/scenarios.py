@@ -24,6 +24,7 @@ FAILURE_TYPES = {
     "missing_tool_use": "Answered without using a required tool",
     "wrong_final_state": "Records in the target system don't match what should have happened",
     "incomplete_answer": "The reply is missing information the user needs",
+    "misleading_answer": "The reply claims something that didn't happen, e.g. a failed ticket",
     "stopped": "A guardrail stopped the run (budget, loop, turns, refusal, API error)",
 }
 
@@ -41,9 +42,12 @@ class Scenario:
     must_not_call: list[str] = field(default_factory=list)
     expect_pto_requests: int | None = None
     expect_pto_dates: list[str] | None = None  # [start, end] of the single expected request
+    expect_pto_ranges: list[list[str]] | None = None  # every expected [start, end], any order
     expect_tickets: int | None = None
     expect_ticket_category: str | None = None
     answer_contains: list[str] = field(default_factory=list)
+    answer_excludes: list[str] = field(default_factory=list)
+    tags: list[str] = field(default_factory=lambda: ["standard"])
 
 
 @dataclass
@@ -109,6 +113,12 @@ def check(scenario: Scenario, run: RunResult, helpdesk: Helpdesk) -> list[tuple[
         got = [request.start_date.isoformat(), request.end_date.isoformat()]
         if got != scenario.expect_pto_dates:
             failures.append(("wrong_final_state", f"PTO dates {got}"))
+    if scenario.expect_pto_ranges is not None:
+        got_ranges = sorted(
+            [r.start_date.isoformat(), r.end_date.isoformat()] for r in helpdesk.pto_requests
+        )
+        if got_ranges != sorted(scenario.expect_pto_ranges):
+            failures.append(("wrong_final_state", f"PTO ranges {got_ranges}"))
     if scenario.expect_tickets is not None and len(helpdesk.tickets) != scenario.expect_tickets:
         failures.append(
             (
@@ -124,6 +134,9 @@ def check(scenario: Scenario, run: RunResult, helpdesk: Helpdesk) -> list[tuple[
     missing = [kw for kw in scenario.answer_contains if kw.lower() not in answer]
     if missing:
         failures.append(("incomplete_answer", f"missing {missing}"))
+    claimed = [text for text in scenario.answer_excludes if text.lower() in answer]
+    if claimed:
+        failures.append(("misleading_answer", f"says {claimed}"))
     return failures
 
 
@@ -153,6 +166,15 @@ def render_report(results: list[ScenarioResult], config: AgentConfig) -> str:
         f"**{passed}/{len(results)} scenarios passed** · total cost ${cost:.4f} · "
         f"avg {sum(r.run.turns for r in results) / max(len(results), 1):.1f} turns",
         "",
+    ]
+    tags = sorted({tag for r in results for tag in r.scenario.tags})
+    if len(tags) > 1:
+        breakdown = []
+        for tag in tags:
+            tagged = [r for r in results if tag in r.scenario.tags]
+            breakdown.append(f"{tag}: {sum(r.passed for r in tagged)}/{len(tagged)}")
+        lines += ["By difficulty: " + " · ".join(breakdown), ""]
+    lines += [
         "| Scenario | Result | Turns | Tools called | Cost | Failures |",
         "|---|---|---|---|---|---|",
     ]
